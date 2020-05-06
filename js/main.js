@@ -43,7 +43,7 @@ function authorized() {
         buttonOut.removeEventListener("click", logOut);
         checkAuth();
     }
-    console.log("Authorized");
+    // console.log("Authorized");
 
     userName.textContent = login;
 
@@ -64,7 +64,7 @@ function notAuthorized() {
         event.preventDefault();
 
         login = logInInput.value;
-        localStorage.setItem("gloDelivery", login);
+        localStorage.setItem("gloDelivery", login); // add user to local storage
 
         if (login.trim()) {
             // trim() removes spaces
@@ -77,6 +77,7 @@ function notAuthorized() {
         } else {
             logInInput.style.borderColor = "red";
         }
+
     }
 
     buttonAuth.addEventListener("click", toggleModalAuth);
@@ -153,23 +154,21 @@ function openGoods(event) {
 
     const restaurant = target.closest(".card-restaurant"); // go to this parent element
     if (restaurant) {
-        containerPromo.classList.add("hide");
-        restaurants.classList.add("hide");
-        menu.classList.remove("hide");
 
-        cardsMenu.textContent = "";
+        if(login){
+            cardsMenu.textContent = "";
+            containerPromo.classList.add("hide");
+            restaurants.classList.add("hide");
+            menu.classList.remove("hide");
+            createCardGood();
+            createCardGood();
+            createCardGood();
+        }else {
+            toggleModalAuth();
+        }
 
-        createCardGood();
-        createCardGood();
-        createCardGood();
     }
 }
-
-checkAuth();
-
-createCardRestaurant();
-createCardRestaurant();
-createCardRestaurant();
 
 logo.addEventListener("click", function () {
     containerPromo.classList.remove("hide");
@@ -177,7 +176,18 @@ logo.addEventListener("click", function () {
     menu.classList.add("hide");
 });
 
+
 cardsRestaurants.addEventListener("click", openGoods);
+
+
 cartButton.addEventListener("click", toggleModal);
 close.addEventListener("click", toggleModal);
 // work with restaurant cards
+
+
+checkAuth();
+
+createCardRestaurant();
+createCardRestaurant();
+createCardRestaurant();
+
