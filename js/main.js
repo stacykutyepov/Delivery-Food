@@ -19,9 +19,16 @@ const cardsMenu = document.querySelector(".cards-menu");
 
 let login = localStorage.getItem("gloDelivery");
 
+// ^[a-zA-Z][a-zA-Z0-9-_\.]{1,20}$
+
 // modalAuth.classList.add("hello");
 // console.log(modalAuth.classList.contains('hello'));
 // modalAuth.classList.remove('modal-auth');
+
+const valid = function (str) {
+    const nameRegex = /^[a-zA-Z][a-zA-Z0-9-_\.]{1,20}$/;
+    return nameRegex.test(str);
+};
 
 function toggleModal() {
     modal.classList.toggle("is-open");
@@ -66,7 +73,7 @@ function notAuthorized() {
         login = logInInput.value;
         localStorage.setItem("gloDelivery", login); // add user to local storage
 
-        if (login.trim()) {
+        if (valid(login)) {
             // trim() removes spaces
             toggleModalAuth();
             buttonAuth.removeEventListener("click", toggleModalAuth);
@@ -190,4 +197,3 @@ let swiper = new Swiper(".swiper-container", {
     autoplay: true,
     speed: 400,
 });
-
