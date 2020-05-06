@@ -77,7 +77,6 @@ function notAuthorized() {
         } else {
             logInInput.style.borderColor = "red";
         }
-
     }
 
     buttonAuth.addEventListener("click", toggleModalAuth);
@@ -154,8 +153,7 @@ function openGoods(event) {
 
     const restaurant = target.closest(".card-restaurant"); // go to this parent element
     if (restaurant) {
-
-        if(login){
+        if (login) {
             cardsMenu.textContent = "";
             containerPromo.classList.add("hide");
             restaurants.classList.add("hide");
@@ -163,10 +161,9 @@ function openGoods(event) {
             createCardGood();
             createCardGood();
             createCardGood();
-        }else {
+        } else {
             toggleModalAuth();
         }
-
     }
 }
 
@@ -176,18 +173,21 @@ logo.addEventListener("click", function () {
     menu.classList.add("hide");
 });
 
-
 cardsRestaurants.addEventListener("click", openGoods);
-
 
 cartButton.addEventListener("click", toggleModal);
 close.addEventListener("click", toggleModal);
 // work with restaurant cards
-
 
 checkAuth();
 
 createCardRestaurant();
 createCardRestaurant();
 createCardRestaurant();
+
+let swiper = new Swiper(".swiper-container", {
+    loop: true,
+    autoplay: true,
+    speed: 400,
+});
 
