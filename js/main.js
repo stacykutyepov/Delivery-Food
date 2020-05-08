@@ -22,8 +22,13 @@ const rating = document.querySelector('.rating');
 const minPrice = document.querySelector('.price');
 const category = document.querySelector('.category');
 const inputSearch = document.querySelector('.input-search');
+const modalBody = document.querySelector('.modal-body');
+const modalPrice = document.querySelector('.modal-pricetag');
+const buttonClearCart = document.querySelector('.clear-cart');
 
 let login = localStorage.getItem("gloDelivery");
+
+const cart = [];
 
 // ^[a-zA-Z][a-zA-Z0-9-_\.]{1,20}$
 
@@ -68,7 +73,6 @@ function toggleModalAuth() {
 function authorized() {
     function logOut() {
         login = null;
-
         localStorage.removeItem("gloDelivery");
         buttonAuth.style.display = "";
         userName.style.display = "";
@@ -83,6 +87,8 @@ function authorized() {
         containerPromo.classList.remove("hide");
         restaurants.classList.remove("hide");
         menu.classList.add("hide");
+        cartButton.style.display = '';
+
     }
     // console.log("Authorized");
 
@@ -91,7 +97,8 @@ function authorized() {
     // take away and display new buttons
     buttonAuth.style.display = "none";
     userName.style.display = "inline";
-    buttonOut.style.display = "block";
+    buttonOut.style.display = "flex";
+    cartButton.style.display = 'flex';
 
     buttonOut.addEventListener("click", logOut);
 }
@@ -181,7 +188,7 @@ function createCardRestaurant(restaurant) {
 }
 
 // Crete Cards for Items
-function createCardGood({ description, image, name, price }) {
+function createCardGood({ description, image, name, price, id }) {
 
     const card = document.createElement("div");
     card.className = "card";
@@ -199,11 +206,11 @@ function createCardGood({ description, image, name, price }) {
             </div>
         </div>
         <div class="card-buttons">
-            <button class="button button-primary button-add-cart">
+            <button class="button button-primary button-add-cart" id = "${id}">
                 <span class="button-card-text">Add to Cart</span>
                 <span class="button-cart-svg"></span>
             </button>
-            <strong class="card-price-bold">${price} ₽</strong>
+            <strong class="card-price card-price-bold">${price} ₽</strong>
         </div>
     </div>
 </div>
@@ -256,26 +263,123 @@ function returnMain() {
     menu.classList.add("hide");
 }
 
+function addToCart(event) {
+
+    const target = event.target;
+
+    // get the right click
+    const buttonAddToCart = target.closest('.button-add-cart');
+
+    if (buttonAddToCart) {
+        // get the card name and cost
+        const card = target.closest('.card');
+        const title = card.querySelector('.card-title-reg').textContent;
+        const cost = card.querySelector('.card-price').textContent;
+        const id = buttonAddToCart.id;
+
+        // check if same item is already present into array
+        const food = cart.find(function (item) {
+            return item.id === id;
+        })
+
+        // if present increase a count
+        if (food) {
+            food.count += 1;
+        } else {
+            // push to our cart array a new object
+            cart.push({ id, title, cost, count: 1 });
+        }
+    }
+}
+
+function renderCart() {
+
+    // empty the Cart
+    modalBody.textContent = '';
+
+    // create new items in a the Cart
+    cart.forEach(function ({ id, title, cost, count }) {
+        const itemCart = `
+           <div class="food-row">
+                <span class="food-name">${title}</span>
+                <strong class="food-price">${cost}</strong>
+                 <div class="food-counter">
+                <button class="counter-button counter-minus" data-id =${id}>-</button>
+                <span class="counter">${count}</span>
+                <button class="counter-button counter-plus" data-id =${id}>+</button>
+        </div>
+    </div>
+        `;
+
+        modalBody.insertAdjacentHTML('afterbegin', itemCart);
+    });
+
+    // calculate the total price in the cart
+    const totalPrice = cart.reduce(function (result, item) {
+        return result + (parseFloat(item.cost) * item.count);
+    }, 0);
+
+    // display total price on UI
+    modalPrice.textContent = totalPrice + ' ₽';
+}
+
+// change the count by using + and - in the Cart
+function changeCount(event) {
+    const target = event.target;
+    // check if target has a certain class 
+    if (target.classList.contains('counter-button')) {
+        const food = cart.find(function (item) {
+            return item.id === target.dataset.id;
+        });
+        if (target.classList.contains('counter-minus')) {
+            food.count--;
+            if (food.count === 0) {
+                cart.splice(cart.indexOf(food), 1);
+            }
+        }
+
+
+        if (target.classList.contains('counter-plus')) food.count++;
+        renderCart();
+    }
+}
+
 function init() {
     getData("./db/partners.json").then(function (data) {
         data.forEach(createCardRestaurant);
     });
 
+    // clear the Cart
+    buttonClearCart.addEventListener('click', function () {
+        cart.length = 0;
+        renderCart();
+    })
+
     logo.addEventListener("click", returnMain);
+
+    // Change count in the Cart
+    modalBody.addEventListener('click', changeCount);
 
     cardsRestaurants.addEventListener("click", openGoods);
 
-    cartButton.addEventListener("click", toggleModal);
-    closed.addEventListener("click", toggleModal);
+    // add click to the Cart
+    cartButton.addEventListener("click", function () {
+        renderCart();
+        toggleModal();
+    });
+
     // work with restaurant cards
+    closed.addEventListener("click", toggleModal);
+
+    // work with the Cart
+    cardsMenu.addEventListener('click', addToCart);
 
     // Add Search by Name and Restaurant
     inputSearch.addEventListener('keydown', function (event) {
+
         if (event.keyCode === 13) {
             const target = event.target;
-
             const value = target.value.toLowerCase().trim();
-
             target.value = '';
 
             if (!value || value.length < 4) {
@@ -332,6 +436,6 @@ function init() {
         autoplay: true,
         speed: 400,
     });
-}
+};
 
 init();
