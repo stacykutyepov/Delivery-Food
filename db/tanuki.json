@@ -1,42 +1,42 @@
 [
     {
         "id": "tn01",
-        "name": "PHILADELPHIA NISUAZ",
+        "name": "Philadelphia Nisuaz",
         "description": "Eel, avocado, cheese, tobiko, Nicoise sauce, sesame, 6 pcs.",
         "price": 455,
         "image": "img/tanuki/nisuaz.jpg"
     },
     {
         "id": "tn02",
-        "name": "PHILADELPHIA SMOUK",
+        "name": "Philadelphia Smoke",
         "description": "Smoked salmon, smoked chicken, omelet, cucumber, avocado, cheese, mix of sauces, 6 pcs.",
         "price": 455,
         "image": "img/tanuki/smoke.jpg"
     },
     {
         "id": "tn03",
-        "name": "PHILADELPHIA FRESH",
+        "name": "Philadelphia Fresh",
         "description": "Salmon, avocado, cucumber, cheese, omelet, tobiko, mix of sauces",
         "price": 455,
         "image": "img/tanuki/fresh.jpg"
     },
     {
         "id": "tn04",
-        "name": "CALIFORNIA AZHI",
+        "name": "California",
         "description": "Salmon, avocado, crab mix, cheese, sauce, passion fruit, tobiko, sesame, 6 pcs.",
         "price": 455,
         "image": "img/tanuki/azhi.jpg"
     },
     {
         "id": "tn05",
-        "name": "CALIFORNIA BLACK",
+        "name": "California Black",
         "description": "Shrimp, crab mix, cheese, tobiko, mix of sauces, sesame, 6 pcs.",
         "price": 455,
         "image": "img/tanuki/black.jpg"
     },
     {
         "id": "tn06",
-        "name": "TANUKI",
+        "name": "Tanuki",
         "description": "Shrimp, snow crab, guacamole, cheese, cucumber, mix of sauces, tobiko, sesame, 6 pcs.",
         "price": 649,
         "image": "img/tanuki/tanuki.jpg"

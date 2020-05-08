@@ -8,6 +8,7 @@ const modalAuth = document.querySelector(".modal-auth");
 const closeAuth = document.querySelector(".close-auth");
 const logInForm = document.getElementById("logInForm");
 const logInInput = document.getElementById("login");
+const passwordInput = document.getElementById("password");
 const userName = document.querySelector(".user-name");
 const buttonOut = document.querySelector(".button-out");
 const cardsRestaurants = document.querySelector(".cards-restaurants");
@@ -40,10 +41,17 @@ const getData = async function (url) {
     return await response.json();
 };
 
-const valid = function (str) {
+const validLogin = function (str) {
+    // Username (with a restriction of 2-20 characters, which can be letters and numbers, the first character is necessarily a letter)
     const nameRegex = /^[a-zA-Z][a-zA-Z0-9-_\.]{1,20}$/;
     return nameRegex.test(str);
 };
+
+const validPassword = function (str) {
+    //Password: (at least 1 numeric character)
+    const passwordRegex = /(?=.*[0-9])/
+    return passwordRegex.test(str);
+}
 
 function toggleModal() {
     modal.classList.toggle("is-open");
@@ -51,6 +59,7 @@ function toggleModal() {
 
 function toggleModalAuth() {
     logInInput.style.borderColor = "";
+    passwordInput.style.borderColor = '';
     modalAuth.classList.toggle("is-open");
 }
 
@@ -59,12 +68,21 @@ function toggleModalAuth() {
 function authorized() {
     function logOut() {
         login = null;
+
         localStorage.removeItem("gloDelivery");
         buttonAuth.style.display = "";
         userName.style.display = "";
         buttonOut.style.display = "";
+        logInInput.placeholder = '';
+        passwordInput.placeholder = "";
+
         buttonOut.removeEventListener("click", logOut);
         checkAuth();
+
+        // if the user logs out on a different page he'll be brought to a Home Page
+        containerPromo.classList.remove("hide");
+        restaurants.classList.remove("hide");
+        menu.classList.add("hide");
     }
     // console.log("Authorized");
 
@@ -89,7 +107,9 @@ function notAuthorized() {
         login = logInInput.value;
         localStorage.setItem("gloDelivery", login); // add user to local storage
 
-        if (valid(login)) {
+        console.log(passwordInput.value)
+
+        if (validLogin(login) && validPassword(passwordInput.value)) {
             // trim() removes spaces
             toggleModalAuth();
             buttonAuth.removeEventListener("click", toggleModalAuth);
@@ -97,9 +117,15 @@ function notAuthorized() {
             logInForm.removeEventListener("submit", logIn);
             logInForm.reset(); // reset the form
             checkAuth();
-        } else {
-            logInInput.style.borderColor = "red";
         }
+        else {
+            logInInput.value = '';
+            logInInput.placeholder = "start with a letter";
+            passwordInput.placeholder = "at least 1 number";
+            logInInput.style.borderColor = "red";
+            passwordInput.style.borderColor = 'red';
+        }
+
     }
 
     buttonAuth.addEventListener("click", toggleModalAuth);
@@ -138,7 +164,7 @@ function createCardRestaurant(restaurant) {
     <div class="card-text">
         <div class="card-heading">
             <h3 class="card-title">${name}</h3>
-            <span class="card-tag tag">${timeOfDelivery} мин</span>
+            <span class="card-tag tag">${timeOfDelivery} min</span>
         </div>
         <div class="card-info">
             <div class="rating">
@@ -174,10 +200,10 @@ function createCardGood({ description, image, name, price }) {
         </div>
         <div class="card-buttons">
             <button class="button button-primary button-add-cart">
-                <span class="button-card-text">В корзину</span>
+                <span class="button-card-text">Add to Cart</span>
                 <span class="button-cart-svg"></span>
             </button>
-            <strong class="card-price-bold">От ${price} ₽</strong>
+            <strong class="card-price-bold">${price} ₽</strong>
         </div>
     </div>
 </div>
@@ -191,7 +217,7 @@ function createCardGood({ description, image, name, price }) {
 
 // open Restaurant's menu
 function openGoods(event) {
-    
+
     const target = event.target;
 
     const restaurant = target.closest(".card-restaurant"); // go to this parent element
@@ -209,7 +235,7 @@ function openGoods(event) {
 
             restaurantTitle.textContent = name;
             rating.textContent = stars;
-            minPrice.textContent = `От ${price} ₽`;
+            minPrice.textContent = `From ${price} ₽`;
             category.textContent = kitchen;
 
             getData(`./db/${restaurant.products}`).then(function (
@@ -243,6 +269,7 @@ function init() {
     closed.addEventListener("click", toggleModal);
     // work with restaurant cards
 
+    // Add Search by Name and Restaurant
     inputSearch.addEventListener('keydown', function (event) {
         if (event.keyCode === 13) {
             const target = event.target;
@@ -266,7 +293,6 @@ function init() {
                     const products = data.map(function (item) {
                         return item.products;
                     })
-
 
                     products.forEach(function (product) {
                         getData(`./db/${product}`)
