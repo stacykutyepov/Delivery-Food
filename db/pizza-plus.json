@@ -1,44 +1,44 @@
 [
-  {
-    "id": "pp01",
-    "name": "Пицца Везувий",
-    "description": "Соус томатный, сыр «Моцарелла», ветчина, пепперони, перец «Халапенье», соус «Тобаско», томаты.",
-    "price": 545,
-    "image": "img/pizza-plus/pizza-vesuvius.jpg"
-  },
-  {
-    "id": "pp02",
-    "name": "Пицца Девичник",
-    "description": "Соус томатный, постное тесто, нежирный сыр, кукуруза, лук, маслины, грибы, помидоры, болгарский перец.",
-    "price": 450,
-    "image": "img/pizza-plus/pizza-girls.jpg"
-  },
-  {
-    "id": "pp03",
-    "name": "Пицца Оле-Оле",
-    "description": "Соус томатный, сыр «Моцарелла», черри, маслины, зелень, майонез",
-    "price": 440,
-    "image": "img/pizza-plus/pizza-oleole.jpg"
-  },
-  {
-    "id": "pp04",
-    "name": "Пицца Плюс",
-    "description": "Соус томатный, сыр «Моцарелла», сыр «Чеддер», томаты, пепперони, телятина, грибы, бекон, болгарский перец.",
-    "price": 805,
-    "image": "img/pizza-plus/pizza-plus.jpg"
-  },
-  {
-    "id": "pp05",
-    "name": "Пицца Гавайская",
-    "description": "Соус томатный, сыр «Моцарелла», ветчина, ананасы",
-    "price": 440,
-    "image": "img/pizza-plus/pizza-hawaiian.jpg"
-  },
-  {
-    "id": "pp06",
-    "name": "Пицца Классика",
-    "description": "Соус томатный, сыр «Моцарелла», сыр «Пармезан», ветчина, салями, грибы.",
-    "price": 510,
-    "image": "img/pizza-plus/pizza-classic.jpg"
-  }
+    {
+        "id": "pp01",
+        "name": "Pizza Vesuvius",
+        "description": "Tomato sauce, Mozzarella cheese, ham, pepperoni, Jalapenier pepper, Tobasco sauce, tomatoes.",
+        "price": 545,
+        "image": "img/pizza-plus/pizza-vesuvius.jpg"
+    },
+    {
+        "id": "pp02",
+        "name": "Pizza Slumber Party",
+        "description": "Tomato sauce, lean dough, low-fat cheese, corn, onions, olives, mushrooms, tomatoes, bell peppers.",
+        "price": 450,
+        "image": "img/pizza-plus/pizza-girls.jpg"
+    },
+    {
+        "id": "pp03",
+        "name": "Pizza Ole Ole",
+        "description": "Tomato sauce, Mozzarella cheese, cherry, olives, greens, mayonnaise",
+        "price": 440,
+        "image": "img/pizza-plus/pizza-oleole.jpg"
+    },
+    {
+        "id": "pp04",
+        "name": "Pizza Plus",
+        "description": "Tomato sauce, Mozzarella & Cheddar cheese, tomatoes, pepperoni, veal, mushrooms, bacon, bell pepper.",
+        "price": 805,
+        "image": "img/pizza-plus/pizza-plus.jpg"
+    },
+    {
+        "id": "pp05",
+        "name": "Pizza Hawaiian",
+        "description": "Tomato sauce, Mozzarella cheese, ham, pineapple",
+        "price": 440,
+        "image": "img/pizza-plus/pizza-hawaiian.jpg"
+    },
+    {
+        "id": "pp06",
+        "name": "Pizza Classic",
+        "description": "Tomato sauce, Mozzarella cheese, Parmesan cheese, ham, salami, mushrooms.",
+        "price": 510,
+        "image": "img/pizza-plus/pizza-classic.jpg"
+    }
 ]

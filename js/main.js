@@ -191,6 +191,7 @@ function createCardGood({ description, image, name, price }) {
 
 // open Restaurant's menu
 function openGoods(event) {
+    
     const target = event.target;
 
     const restaurant = target.closest(".card-restaurant"); // go to this parent element
