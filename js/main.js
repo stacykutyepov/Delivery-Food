@@ -25,6 +25,7 @@ const inputSearch = document.querySelector('.input-search');
 const modalBody = document.querySelector('.modal-body');
 const modalPrice = document.querySelector('.modal-pricetag');
 const buttonClearCart = document.querySelector('.clear-cart');
+const cartText = document.querySelector('.cart-text');
 
 let login = localStorage.getItem("gloDelivery");
 
@@ -268,6 +269,14 @@ function returnMain() {
     menu.classList.add("hide");
 }
 
+function updateTotalItemCart(){
+    const totalItemsCart = cart.reduce(function (result, item) {
+        return result + item.count;
+    }, 0);
+    console.log(totalItemsCart);
+    cartText.textContent = `Cart (${totalItemsCart})`
+}
+
 function addToCart(event) {
 
     const target = event.target;
@@ -283,6 +292,8 @@ function addToCart(event) {
         const cost = card.querySelector('.card-price').textContent;
         const id = buttonAddToCart.id;
 
+        // cartTotalCount += 1;
+        // cartText.textContent = `Cart (${cartTotalCount})`
         // check if same item is already present into array
         const food = cart.find(function (item) {
             return item.id === id;
@@ -293,11 +304,12 @@ function addToCart(event) {
             food.count += 1;
         } else {
             // push to our cart array a new object
-
             cart.push({ id, title, cost, count: 1 });
-            localStorage.setItem('cartStorage', JSON.stringify(cart));
         }
+        localStorage.setItem('cartStorage', JSON.stringify(cart));
+        updateTotalItemCart();
     }
+
 }
 
 function renderCart() {
@@ -327,6 +339,7 @@ function renderCart() {
 
     // display total price on UI
     modalPrice.textContent = totalPrice + ' ₽';
+    updateTotalItemCart();
 }
 
 // change the count by using + and - in the Cart
@@ -355,6 +368,8 @@ function init() {
     getData("./db/partners.json").then(function (data) {
         data.forEach(createCardRestaurant);
     });
+
+    updateTotalItemCart();
 
     // clear the Cart
     buttonClearCart.addEventListener('click', function () {
