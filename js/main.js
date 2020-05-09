@@ -28,7 +28,9 @@ const buttonClearCart = document.querySelector('.clear-cart');
 
 let login = localStorage.getItem("gloDelivery");
 
-const cart = [];
+let cart = [];
+cart = JSON.parse(localStorage.getItem('cartStorage'));
+
 
 // ^[a-zA-Z][a-zA-Z0-9-_\.]{1,20}$
 
@@ -267,6 +269,8 @@ function addToCart(event) {
 
     const target = event.target;
 
+    localStorage.setItem('cartStorage', JSON.stringify(cart));
+
     // get the right click
     const buttonAddToCart = target.closest('.button-add-cart');
 
@@ -293,10 +297,8 @@ function addToCart(event) {
 }
 
 function renderCart() {
-
     // empty the Cart
     modalBody.textContent = '';
-
     // create new items in a the Cart
     cart.forEach(function ({ id, title, cost, count }) {
         const itemCart = `
@@ -335,6 +337,7 @@ function changeCount(event) {
             food.count--;
             if (food.count === 0) {
                 cart.splice(cart.indexOf(food), 1);
+                localStorage.setItem('cartStorage', JSON.stringify(cart));
             }
         }
 
@@ -352,6 +355,7 @@ function init() {
     // clear the Cart
     buttonClearCart.addEventListener('click', function () {
         cart.length = 0;
+        localStorage.removeItem('cartStorage');
         renderCart();
     })
 
