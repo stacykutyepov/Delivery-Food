@@ -30,6 +30,9 @@ let login = localStorage.getItem("gloDelivery");
 
 let cart = [];
 cart = JSON.parse(localStorage.getItem('cartStorage'));
+if (!cart) {
+    cart = [];
+}
 
 
 // ^[a-zA-Z][a-zA-Z0-9-_\.]{1,20}$
@@ -268,8 +271,7 @@ function returnMain() {
 function addToCart(event) {
 
     const target = event.target;
-
-    localStorage.setItem('cartStorage', JSON.stringify(cart));
+    // localStorage.setItem('cartStorage', JSON.stringify(cart));
 
     // get the right click
     const buttonAddToCart = target.closest('.button-add-cart');
@@ -291,7 +293,9 @@ function addToCart(event) {
             food.count += 1;
         } else {
             // push to our cart array a new object
+
             cart.push({ id, title, cost, count: 1 });
+            localStorage.setItem('cartStorage', JSON.stringify(cart));
         }
     }
 }
@@ -337,12 +341,12 @@ function changeCount(event) {
             food.count--;
             if (food.count === 0) {
                 cart.splice(cart.indexOf(food), 1);
-                localStorage.setItem('cartStorage', JSON.stringify(cart));
             }
         }
 
-
         if (target.classList.contains('counter-plus')) food.count++;
+        localStorage.setItem('cartStorage', JSON.stringify(cart));
+
         renderCart();
     }
 }
@@ -355,8 +359,8 @@ function init() {
     // clear the Cart
     buttonClearCart.addEventListener('click', function () {
         cart.length = 0;
-        localStorage.removeItem('cartStorage');
         renderCart();
+        localStorage.removeItem('cartStorage');
     })
 
     logo.addEventListener("click", returnMain);
