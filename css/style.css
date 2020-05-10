@@ -249,11 +249,13 @@ button {
     margin-bottom: 30px;
     flex-basis: 31%;
     text-decoration: none;
-
+    transition: all .2s ease-in-out;
 }
 
-.card-restaurant {
-    cursor: pointer
+.card:hover{
+    transform: scale(1.07);
+    /* box-shadow: 0 2px 0px  #1890ff; */
+
 }
 
 .card-image {
@@ -269,7 +271,6 @@ button {
     display: flex;
     flex-direction: column;
 }
-
 
 
 .restaurants .card-text {

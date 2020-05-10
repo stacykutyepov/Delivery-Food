@@ -35,13 +35,6 @@ if (!cart) {
     cart = [];
 }
 
-
-// ^[a-zA-Z][a-zA-Z0-9-_\.]{1,20}$
-
-// modalAuth.classList.add("hello");
-// console.log(modalAuth.classList.contains('hello'));
-// modalAuth.classList.remove('modal-auth');
-
 const getData = async function (url) {
     const response = await fetch(url);
 
@@ -74,12 +67,16 @@ function toggleModalAuth() {
     modalAuth.classList.toggle("is-open");
 }
 
-/* ****************************************************** */
 // Authorized
 function authorized() {
     function logOut() {
         login = null;
         localStorage.removeItem("gloDelivery");
+        // remove items from the cart
+        cart.length = 0;
+        renderCart();
+        localStorage.removeItem('cartStorage');
+
         buttonAuth.style.display = "";
         userName.style.display = "";
         buttonOut.style.display = "";
@@ -106,10 +103,10 @@ function authorized() {
     buttonOut.style.display = "flex";
     cartButton.style.display = 'flex';
 
+
     buttonOut.addEventListener("click", logOut);
 }
 
-/* ****************************************************** */
 // NOT AUTHORIZED
 function notAuthorized() {
     console.log("Not authorized");
@@ -120,7 +117,8 @@ function notAuthorized() {
         login = logInInput.value;
         localStorage.setItem("gloDelivery", login); // add user to local storage
 
-        console.log(passwordInput.value)
+        updateTotalItemCart();
+        renderCart();
 
         if (validLogin(login) && validPassword(passwordInput.value)) {
             // trim() removes spaces
@@ -130,9 +128,11 @@ function notAuthorized() {
             logInForm.removeEventListener("submit", logIn);
             logInForm.reset(); // reset the form
             checkAuth();
+
         }
         else {
             logInInput.value = '';
+            passwordInput.value = "";
             logInInput.placeholder = "start with a letter";
             passwordInput.placeholder = "at least 1 number";
             logInInput.style.borderColor = "red";
@@ -146,13 +146,7 @@ function notAuthorized() {
     logInForm.addEventListener("submit", logIn);
 }
 
-function checkAuth() {
-    if (login) {
-        authorized();
-    } else {
-        notAuthorized();
-    }
-}
+function checkAuth() { login ? authorized() : notAuthorized(); }
 
 // create Cards for Restaurants
 function createCardRestaurant(restaurant) {
@@ -214,7 +208,7 @@ function createCardGood({ description, image, name, price, id }) {
         <div class="card-buttons">
             <button class="button button-primary button-add-cart" id = "${id}">
                 <span class="button-card-text">Add to Cart</span>
-                <span class="button-cart-svg"></span>
+                <span class="button-cart-svg cart-icon"></span>
             </button>
             <strong class="card-price card-price-bold">${price} ₽</strong>
         </div>
@@ -224,8 +218,6 @@ function createCardGood({ description, image, name, price, id }) {
     );
 
     cardsMenu.insertAdjacentElement("beforeend", card);
-    // document.getElementsByClassName('restaurant-title')[0].innerHTML = restaurant.name;
-
 }
 
 // open Restaurant's menu
@@ -251,12 +243,8 @@ function openGoods(event) {
             minPrice.textContent = `From ${price} ₽`;
             category.textContent = kitchen;
 
-            getData(`./db/${restaurant.products}`).then(function (
-                data
-            ) {
-                data.forEach(createCardGood);
-            });
-
+            getData(`./db/${restaurant.products}`)
+                .then(data => data.forEach(createCardGood));
         } else {
             toggleModalAuth();
         }
@@ -269,11 +257,10 @@ function returnMain() {
     menu.classList.add("hide");
 }
 
-function updateTotalItemCart(){
+function updateTotalItemCart() {
     const totalItemsCart = cart.reduce(function (result, item) {
         return result + item.count;
     }, 0);
-    console.log(totalItemsCart);
     cartText.textContent = `Cart (${totalItemsCart})`
 }
 
@@ -292,12 +279,8 @@ function addToCart(event) {
         const cost = card.querySelector('.card-price').textContent;
         const id = buttonAddToCart.id;
 
-        // cartTotalCount += 1;
-        // cartText.textContent = `Cart (${cartTotalCount})`
         // check if same item is already present into array
-        const food = cart.find(function (item) {
-            return item.id === id;
-        })
+        const food = cart.find(item => item.id === id);
 
         // if present increase a count
         if (food) {
@@ -308,9 +291,21 @@ function addToCart(event) {
         }
         localStorage.setItem('cartStorage', JSON.stringify(cart));
         updateTotalItemCart();
+        // Change added element cart color
+        const buttonCartIcon = buttonAddToCart.querySelector('.cart-icon');
+        buttonCartIcon.style.backgroundColor = '#1890ff';
+        setTimeout(function () { buttonCartIcon.style.backgroundColor = '' }, 500);
     }
 
 }
+
+
+
+// const buttonCartIcon = document.querySelector('.cart-icon');
+
+// buttonCartIcon.style.backgroundColor = '#1890ff';
+// setTimeout(function () { buttonCartIcon.style.backgroundColor = '' }, 1000);
+
 
 function renderCart() {
     // empty the Cart
@@ -365,14 +360,13 @@ function changeCount(event) {
 }
 
 function init() {
-    getData("./db/partners.json").then(function (data) {
+    getData("./db/partners.json").then(data => {
         data.forEach(createCardRestaurant);
     });
 
     updateTotalItemCart();
-
     // clear the Cart
-    buttonClearCart.addEventListener('click', function () {
+    buttonClearCart.addEventListener('click', () => {
         cart.length = 0;
         renderCart();
         localStorage.removeItem('cartStorage');
@@ -386,10 +380,8 @@ function init() {
     cardsRestaurants.addEventListener("click", openGoods);
 
     // add click to the Cart
-    cartButton.addEventListener("click", function () {
-        renderCart();
-        toggleModal();
-    });
+    cartButton.addEventListener("click", renderCart);
+    cartButton.addEventListener("click", toggleModal);
 
     // work with restaurant cards
     closed.addEventListener("click", toggleModal);
@@ -398,7 +390,7 @@ function init() {
     cardsMenu.addEventListener('click', addToCart);
 
     // Add Search by Name and Restaurant
-    inputSearch.addEventListener('keydown', function (event) {
+    inputSearch.addEventListener('keydown', event => {
 
         if (event.keyCode === 13) {
             const target = event.target;
@@ -417,18 +409,17 @@ function init() {
 
             getData("./db/partners.json")
                 .then(function (data) {
-                    const products = data.map(function (item) {
-                        return item.products;
-                    })
+                    const products = data.map(item => item.products);
 
                     products.forEach(function (product) {
                         getData(`./db/${product}`)
                             .then(function (data) {
                                 goods.push(...data);
 
-                                const searchGoods = goods.filter(function (item) {
-                                    return item.name.toLowerCase().includes(value);
-                                })
+                                const searchGoods = goods
+                                    .filter(item => {
+                                        return item.name.toLowerCase().includes(value);
+                                    });
 
                                 cardsMenu.textContent = "";
                                 containerPromo.classList.add("hide");
@@ -442,9 +433,7 @@ function init() {
 
                                 return searchGoods;
                             })
-                            .then(function (data) {
-                                data.forEach(createCardGood);
-                            })
+                            .then(data => data.forEach(createCardGood));
                     });
 
                 })
