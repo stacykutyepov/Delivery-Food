@@ -31,6 +31,7 @@ button {
 
 #login, #password{
     border: 1px solid #d9d9d9;
+    outline: 0;
 }
 
 .input {
@@ -42,6 +43,7 @@ button {
     padding: 8px 8px 8px 35px;
     background-repeat: no-repeat;
     background-position: left 11px center;
+    outline: 0;
 }
 
 .address {

@@ -133,8 +133,8 @@ function notAuthorized() {
         else {
             logInInput.value = '';
             passwordInput.value = "";
-            logInInput.placeholder = "start with a letter";
-            passwordInput.placeholder = "at least 1 number";
+            logInInput.placeholder = "Start with a letter";
+            passwordInput.placeholder = "At least 1 number";
             logInInput.style.borderColor = "red";
             passwordInput.style.borderColor = 'red';
         }
