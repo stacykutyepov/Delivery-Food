@@ -1,4 +1,4 @@
-# Welcome to Delivery-Food Website!
+# Welcome to Food Delivery Website!
 Food Delivery Website
 <div align="center">
   <img src="./img/image_01.png" alt="website Preview"></a>
