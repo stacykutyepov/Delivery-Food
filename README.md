@@ -1,5 +1,5 @@
 # Welcome to Food Delivery Website!
-Food Delivery Website
+Food Delivery Website written in Vanilla JavaScript.
 <div align="center">
   <img src="./img/image_01.png" alt="website Preview"></a>
   
