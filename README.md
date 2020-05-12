@@ -8,8 +8,8 @@ Food Delivery Website written in Vanilla JavaScript.
   </br>
   </div>
   <ul>
-  <li>Worked on correct Login and Log Out form;</li>
-  <li>Updating Cart Elements: add, delete, update count;</li>
+  <li>Worked on correct Login and Log Out form, used RegEx to check on the input data;</li>
+  <li>Cart Elements: add, delete, update count;</li>
   <li>Search optimized to search by meal name;</li>
   </ul> 
   <div align="center">
