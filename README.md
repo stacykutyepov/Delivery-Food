@@ -1,8 +1,8 @@
 # Welcome to Food Delivery Website!
 Food Delivery Website written in HTML, CCS & Vanilla JavaScript.
 <div align="center">
+  <p>Visit a Website: <a href=https://codemyjourney.github.io/Delivery-Food/>Food Delivery</a></p>
   <img src="./img/image_01.png" alt="website Preview"></a>
-  
   </br>
   </br>
   </br>
